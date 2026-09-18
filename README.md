@@ -1,65 +1,112 @@
-# Customer Churn Prediction & Retention Analysis
+# Customer Churn Prediction & Retention Analytics
 
-## 📌 Project Overview
-This repository contains an end-to-end Data Analyst portfolio project focused on predicting customer churn for an Indian Bank. The project covers the entire data lifecycle: from data acquisition, cleaning, and exploratory data analysis (EDA), to advanced SQL querying, hypothesis testing, machine learning modeling, and Power BI dashboard preparation.
+![Interactive Dashboard Preview](https://img.shields.io/badge/Live_Dashboard-Interactive_HTML-06B6D4?style=for-the-badge&logo=powerbi)
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/Scikit_Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-Analytics-CC292B?style=for-the-badge&logo=sqlite&logoColor=white)
 
-The goal of this project is to identify at-risk customers and provide actionable business recommendations to improve retention.
+An end-to-end Data Analyst portfolio case study addressing customer attrition for a prominent Indian retail bank. This project demonstrates data engineering, statistical hypothesis testing, analytical SQL querying, machine learning classification with class imbalance treatment (SMOTE), and executive business intelligence dashboarding.
 
-## 📂 Repository Structure
-- **`/data`**: Contains the raw and cleaned datasets.
-- **`/notebooks`**:
-  - `01_data_cleaning_and_eda.ipynb`: Pandas data cleaning, visual EDA with Matplotlib/Seaborn, and Hypothesis Testing.
-  - `02_churn_prediction_model.ipynb`: Machine learning models (Logistic Regression & Random Forest).
-  - `03_sql_analytics.ipynb`: Python-based execution of SQL queries using SQLite and SQLAlchemy.
-- **`/sql`**:
-  - `schema.sql`: Table definition for the data warehouse layer.
-  - `analytical_queries.sql`: Advanced SQL queries (CTEs, Window Functions, Joins).
-- **`/powerbi`**:
-  - `powerbi_export.csv`: Optimized export for BI tools.
-  - `dashboard_guide.md`: Step-by-step guide to building the Power BI dashboard.
-- **`outputs/`**: Contains generated stats.
-- **`requirements.txt`**: Environment dependencies.
+---
 
-## 📊 Dataset
-The project uses an Indian Bank Customer Churn dataset (synthetically augmented from real-world statistical baselines to include data quality issues like duplicates, missing values, and corrupted data types for demonstration purposes). 
+## 📊 Live Interactive Dashboard
+You can immediately view and interact with the executive dashboard by opening [`powerbi/index.html`](file:///powerbi/index.html) in any browser, or review [`powerbi/dashboard_guide.md`](file:///powerbi/dashboard_guide.md) to replicate the design in Power BI Desktop using [`powerbi/powerbi_export.csv`](file:///powerbi/powerbi_export.csv).
 
-- **Before Cleaning**: 10,050 rows
-- **After Cleaning**: 10,000 rows (Removed 50 exact duplicates, imputed 150 missing ages, and fixed string/currency data types for 'Balance').
+---
 
-## ❓ Business Questions Answered
-1. What is the overall churn rate, and how does it vary by geographic location?
-2. Are older customers significantly more likely to churn than younger ones?
-3. How does the number of bank products held impact customer retention?
-4. What is the financial profile (average balance and salary) of a churned customer vs. a retained customer?
-5. Which features are the strongest predictors of churn?
+## 📂 Project Architecture
 
-## 💡 Key Insights (Data-Backed)
-1. **Overall Churn Rate**: The baseline churn rate across the bank is **16.53%**.
-2. **Age Impact (Hypothesis Test)**: We hypothesized that older customers (Age > 50) have a different churn rate. A Chi-Square test confirmed this is highly statistically significant (**p-value = 4.22e-40**). Customers over 50 are a high-risk segment.
-3. **Product Overload**: Churn risk increases dramatically for customers holding 3 or more products.
-4. **Engagement**: Inactive members show a significantly higher propensity to leave the bank compared to highly engaged customers.
+```
+├── data/
+│   ├── indian_bank_customer_churn.csv    # Raw dataset (with intentional anomalies)
+│   ├── cleaned_indian_bank_churn.csv   # Post-cleaning dataset
+│   └── churn_analytics.db               # SQLite database layer
+├── notebooks/
+│   ├── 01_data_cleaning_and_eda.ipynb   # Data wrangling, visual EDA & Hypothesis Testing
+│   ├── 02_churn_prediction_model.ipynb  # ML Pipeline (SMOTE, Logistic Reg, Random Forest)
+│   └── 03_sql_analytics.ipynb          # SQL execution & analytics via SQLAlchemy
+├── sql/
+│   ├── schema.sql                       # DDL schema for analytics table
+│   └── analytical_queries.sql           # 8 advanced business queries (CTEs, Window Functions)
+├── powerbi/
+│   ├── index.html                       # Standalone interactive browser dashboard
+│   ├── powerbi_export.csv               # ML predictions & risk-segmented dataset
+│   └── dashboard_guide.md               # Step-by-step Power BI construction guide
+├── outputs/
+│   └── stats.json                       # Execution metrics & evaluation outputs
+├── requirements.txt                     # Project dependencies
+└── README.md                            # Executive report & portfolio documentation
+```
 
-## 🤖 Machine Learning Model Results
-Two classification models were trained to predict churn. Because churn is an imbalanced class, we used `class_weight='balanced'` for Random Forest and evaluated using F1 Score and Accuracy.
+---
 
-| Model | Accuracy | F1 Score | Notes |
-|-------|----------|----------|-------|
-| **Logistic Regression** | 83.50% | 0.0517 | High accuracy due to majority class prediction, but fails to capture complex minority signals. |
-| **Random Forest** | 82.90% | 0.1140 | Better recall and F1 score; correctly identified non-linear relationships like the "Product Overload" effect. |
+## 🔍 Data Cleaning & Quality Audit
+The raw dataset contains **10,050 records** with real-world data quality anomalies:
+- **Duplicates**: 50 exact duplicate rows identified and removed.
+- **Missing Values**: 142 missing ages and 195 missing salaries imputed using median distributions.
+- **Corrupted Types**: String currency formatting (`₹ 65,000.00`) normalized to standard IEEE floating-point numbers.
+- **Post-Cleaning Count**: **10,000 unique records**.
 
-*Top Features Identified by Random Forest: Age, Balance, and Number of Products.*
+---
 
-## 📈 Specific Business Recommendations
-Based on the analysis, here are 5 specific recommendations for the retention team:
+## 🧪 Statistical Hypothesis Testing
+- **Hypothesis**: Senior customers (Age > 50) have a statistically higher churn probability than younger cohorts.
+- **Test Conducted**: Chi-Square Test of Independence ($\chi^2$).
+- **Test Statistic**: $\chi^2 = 89.6149$, **$p$-value = $2.89 \times 10^{-21}$** ($p < 0.001$).
+- **Business Interpretation**: The disparity in retention between age brackets is statistically significant and not due to random variation. Older clients represent a vulnerable segment needing bespoke advisory retention.
 
-1. **Targeted Senior Outreach**: Since the Age > 50 segment showed a statistically significant higher churn rate, deploy a dedicated relationship management team specifically for older customers, offering personalized financial check-ins.
-2. **Product Rationalization**: Customers with 3+ products show elevated churn. Limit aggressive cross-selling campaigns for customers who already hold 2 products, and focus instead on usage/engagement of existing products.
-3. **Engagement Reactivation Campaign**: Run an automated email/SMS campaign for customers marked as `IsActiveMember = 0` offering temporary fee waivers or bonus points to re-engage them.
-4. **High-Balance Retention Perks**: Since `Balance` is a top predictor in the Random Forest model, flag customers in the top 10% of account balances who show declining activity for premium loyalty perks.
-5. **Dashboard Monitoring**: Deploy the Power BI dashboard (using `powerbi_export.csv`) to regional managers, specifically using the drill-down feature on 'Location' to monitor localized churn spikes week-over-week.
+---
 
-## 🚀 How to Run
-1. Clone the repository.
-2. Run `pip install -r requirements.txt`.
-3. Open and run the Jupyter notebooks in the `/notebooks` folder sequentially.
-4. (Optional) Follow `powerbi/dashboard_guide.md` to build the BI visuals.
+## 🤖 Machine Learning & Class Imbalance Treatment
+
+### Addressing Severe Class Imbalance
+In banking portfolios, customer churn is naturally imbalanced (**10.73% churn rate** in this cohort). Naive classification models predict the majority class (retention) with misleadingly high 89% accuracy but fail on minority recall.
+
+To address this:
+1. **SMOTE (Synthetic Minority Over-sampling Technique)** was applied to balance training distributions.
+2. **Decision Threshold Tuning** was performed over the Precision-Recall curve to optimize the F1-Score for retention campaigns.
+
+### Model Evaluation Summary
+
+| Model | Accuracy | Precision (Churn) | Recall (Churn) | F1-Score | ROC-AUC | Strategy Fit |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **Logistic Regression (SMOTE)** | 65.40% | 18.41% | **64.65%** | **0.2866** | **0.6941** | Broad Campaign (Prioritizes catching all at-risk accounts) |
+| **Random Forest (SMOTE + Tuned @ 0.49)** | **76.30%** | **21.16%** | 44.19% | 0.2861 | 0.6712 | Cost-Sensitive (Higher precision for expensive retention perks) |
+
+> 💡 **Interview Talking Point on F1 Score & Cost Sensitivity:**
+> In retention economics, a false negative (losing a high-value customer without noticing) is significantly more expensive than a false positive (offering a small discount to a customer who wasn't going to churn). Hence, we prioritize Recall & ROC-AUC via SMOTE and threshold calibration over raw accuracy.
+
+---
+
+## 🗄️ SQL Analytics Layer
+The project includes a production SQLite data warehouse layer executing advanced queries:
+1. **Overall & Regional Churn**: CTE calculations for metropolitan churn rates.
+2. **Product Overload Index**: Window function (`SUM() OVER`) computing cumulative churn across product tiers.
+3. **Engagement Matrix**: Grouping inactive vs active accounts to identify high-risk segments.
+4. **Financial Profiling**: Ranking regions and balances by churn volume using `RANK()`.
+
+---
+
+## 📈 Strategic Business Recommendations
+
+1. **Implement Product Holding Threshold**: Customers with 3 or more products experience a surge in churn probability. Re-orient cross-selling incentives from volume to product engagement and feature adoption.
+2. **Senior Wealth Advisory Unit**: Deploy dedicated relationship managers for accounts where Age > 50, providing personalized estate and retirement planning.
+3. **Automated Inactive Reactivation Trigger**: Initiate targeted fee waivers and loyalty bonus incentives within 30 days of an account transitioning to inactive status.
+4. **High-Balance Churn Prevention**: Accounts with balances in the top quartile who show reduced transaction velocity should be routed to priority banking teams.
+5. **Continuous BI Monitoring**: Utilize the Power BI / web dashboard to monitor regional churn velocity week-over-week.
+
+---
+
+## 🛠️ How to Run Locally
+
+```bash
+# 1. Clone repository
+git clone https://github.com/gahlawataanchal69-ops/Customer-Churn-Prediction.git
+cd Customer-Churn-Prediction
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Launch Jupyter to view executed notebooks
+jupyter notebook
+```

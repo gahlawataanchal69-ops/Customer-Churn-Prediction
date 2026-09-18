@@ -1,1 +1,22 @@
-{"raw_rows": 10050, "clean_rows": 10000, "overall_churn": 16.53, "p_val": 4.225300121067105e-40, "lr": {"acc": 0.835, "f1": 0.0517}, "rf": {"acc": 0.829, "f1": 0.114}}
+{
+    "raw_rows": 10050,
+    "clean_rows": 10000,
+    "overall_churn": 10.73,
+    "chi2_stat": 89.6149,
+    "p_val": 2.893313133207933e-21,
+    "optimal_threshold": 0.489,
+    "lr": {
+        "accuracy": 65.4,
+        "precision": 18.41,
+        "recall": 64.65,
+        "f1": 0.2866,
+        "roc_auc": 0.6941
+    },
+    "rf": {
+        "accuracy": 76.3,
+        "precision": 21.16,
+        "recall": 44.19,
+        "f1": 0.2861,
+        "roc_auc": 0.6712
+    }
+}

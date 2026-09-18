@@ -4,7 +4,9 @@ matplotlib
 seaborn
 scipy
 scikit-learn
+imbalanced-learn
 sqlalchemy
+plotly
 ipykernel
 jupyter
 notebook
